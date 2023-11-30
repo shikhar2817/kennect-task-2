@@ -9,19 +9,28 @@ import { defaultRepoData } from "../data";
 export const Dashboard = () => {
     const [repoData, setRepoData] = useState<repoInfo>(defaultRepoData);
     const { selectedRepo } = useGlobalContext();
+    const [loading, setLoading] = useState<Boolean>(true);
+
+    const handleData = async (data: Repository[]) => {
+        const repoAnalysisData = parseRepoDataWeekly(data);
+        setRepoData(repoAnalysisData);
+        setLoading(false);
+    };
 
     useEffect(() => {
+        setLoading(true);
         const updateDashboard = async () => {
             const newData = await getAllIssuesListOfRepo(selectedRepo.owner.login, selectedRepo.name);
             console.log("NEW DATA", newData);
-            const repoAnalysisData = parseRepoDataWeekly(newData);
-            setRepoData(repoAnalysisData);
+            await handleData(newData);
+            // setLoading(false);
         };
         updateDashboard();
     }, [selectedRepo]);
+
     return (
         <div className="dashboard">
-            {
+            {!loading ? (
                 <>
                     <div>
                         {" "}
@@ -44,7 +53,9 @@ export const Dashboard = () => {
                         <h3>Average Weekly Closure Rate: {repoData.averageWeeklyClosure}</h3>
                     </div>
                 </>
-            }
+            ) : (
+                <>Loading...</>
+            )}
         </div>
     );
 };
