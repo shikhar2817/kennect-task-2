@@ -39,3 +39,8 @@
     background-color: #c4b7b7;
     cursor: pointer;
 }
+
+.dashboard {
+    margin: auto;
+    margin-top: 20px;
+}

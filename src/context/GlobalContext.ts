@@ -12,6 +12,10 @@ export const defaultRepo: Repository = {
     owner: { login: "" },
     node_id: "",
     full_name: "",
+    state: "open",
+    created_at: null,
+    updated_at: null,
+    closed_at: null,
 };
 
 export const GlobalContext = React.createContext<ContextProps>({
